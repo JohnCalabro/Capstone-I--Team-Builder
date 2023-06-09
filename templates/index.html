@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Pokemon Team Builder</h1>
+    <p>Type in your favorite mons to build your team, and compare your team 
+        to the teams of champions from the games!</p>
+        <b>I do not own Pokemon, this is purely for fun, and to showcase my skills!</b>
+        <form id="look-up-form">
+            {{ form.hidden_tag() }}
+        
+            {%  for field in form
+                if field.widget.input_type != 'hidden' %}
+            <p>
+                {{ field.label }}
+                {{ field(class_="form-control") }}
+        
+                {% for error in field.errors %}
+                {{ error }}
+                {% endfor %}
+            </p>
+            {% endfor %}
+        
+            <button class="btn btn-success" type="submit">Who's That Mon?!</button>
+        </form>
+   <div id="mon-container">
+
+   </div>
+
+   <div>
+    <form id="invisible" action="/create" method="POST">
+        <input id="poke_one" type="hidden">
+        <input id="poke_two" type="hidden">
+        <input id="poke_three" type="hidden">
+        <input id="poke_four" type="hidden">
+        <input id="poke_five" type="hidden">
+        <input id="poke_six" type="hidden">
+        <br>
+        <br>
+        <button>Create Team!</button>
+    </form>
+   </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"
+    integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+  <script src="/static/build.js"></script>
+</body>
+</html>
