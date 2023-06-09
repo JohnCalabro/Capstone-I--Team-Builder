@@ -64,11 +64,12 @@ def logout():
 
 @app.route('/build')
 def test():
-    form = BuildForm()
-    
-    
-    
-    return render_template('index.html' , form=form)
+
+    if "user_id" not in session:
+        return redirect('/login')
+    else:
+        form = BuildForm()
+        return render_template('index.html' , form=form)
 
 # @app.route('/pokemon')
 # def view mon():
@@ -76,41 +77,23 @@ def test():
 @app.route('/create', methods=["GET", "POST"])
 def send_to_db():
     # mons = request.form.keys()
-    users = User.query.all()
-    mons = request.form.keys()
 
-    team = {index : mon for index, mon in enumerate(mons)}
+    if "user_id" not in session:
+        return redirect('/login')
+    else:
+        users = User.query.all()
+        mons = request.form.keys()
 
-    print(team[0], team[3])
-    
-    user_team = UserTeam(mon_one_id=team[0],mon_two_id=team[1],mon_three_id=team[2],mon_four_id=team[3],
-    mon_five_id=team[4], mon_six_id=team[5], user_id=1)
-    # for index, mon in enumerate(mons):
-    #     poke = int(mon)
         
-    #     dct = {index:poke}
-    #     print(dct)
-
-    db.session.add(user_team)
-    db.session.commit()
-    
-    
-    
-   
-    
-
-
-    
-    
-    
-    # for index, item in enumerate(abs):
-    # print(index, item)
         
+        team = {index : mon for index, mon in enumerate(mons)}
 
+        print(team[0], team[3])
     
+        user_team = UserTeam(mon_one_id=team[0],mon_two_id=team[1],mon_three_id=team[2],mon_four_id=team[3],
+        mon_five_id=team[4], mon_six_id=team[5], user_id=session["user_id"])
 
-    # t = mon[0]
-    # t2 = mon[1]
-
-    # return redirect('/build')
-    return render_template('test.html' , mons=mons)
+        db.session.add(user_team)
+        db.session.commit()
+        
+        return render_template('test.html' , mons=mons)
