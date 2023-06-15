@@ -58,6 +58,19 @@ class UserTeam(db.Model):
 
     teams = db.relationship("User", backref="userteams")
 
+    def serialize(self):
+        return {
+            'team_id' : self.team_id,
+            'mon_one_id' : self.mon_one_id,
+            'mon_two_id' : self.mon_two_id,
+            'mon_three_id' : self.mon_three_id,
+            'mon_four_id' : self.mon_four_id,
+            'mon_five_id' : self.mon_five_id,
+            'mon_six_id' : self.mon_six_id,
+            'user_id'  : self.user_id
+        }
+
+
     # def __repr__(self):
     #     return f"<UserTeam {self.mon_one_id } {self.mon_two_id} {self.mon_three_id} {self.mon_four_id} 
     #     {self.mon_five_id}, {self.mon_six_id} {self.user_id} >"

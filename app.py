@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session, flash, request
+from flask import Flask, render_template, redirect, session, flash, request, jsonify
 from models import db, connect_db, User, UserTeam
 from forms import BuildForm, UserForm
 
@@ -20,7 +20,9 @@ def show_team():
     if "user_id" not in session:
         flash("You must be logged in to view teams")
         return redirect('/login')
-    return render_template('teams.html')
+    else:
+        user = User.query.get(session['user_id'])
+        return render_template('teams.html', user=user)
 
 @app.route('/register', methods=["GET","POST"])
 def add_new_user():
@@ -97,3 +99,17 @@ def send_to_db():
         db.session.commit()
         
         return render_template('test.html' , mons=mons)
+
+
+@app.route('/api/userteams')
+def list_team():
+    all_mons = [mon.serialize() for mon in UserTeam.query.all()]
+    return jsonify(teams=all_mons)
+
+
+@app.route('/api/userteams/<int:id>')
+def get_team(id):
+    user = User.query.get_or_404(id)
+    teams = user.userteams
+    all_mons = [mon.serialize() for mon in teams]
+    return jsonify(teams=all_mons)
