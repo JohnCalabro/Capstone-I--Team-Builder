@@ -1,3 +1,23 @@
+let pkmOne = $('#poke_one')
+
+$("#preview").hide()
+$("#create").hide()
+
+$("#preview").on("click", function (evt) {
+  evt.preventDefault();
+
+  $("#create").show()
+
+  let inputs = $('#invisible').children()
+  console.log(inputs)
+  for(let i=0; i < 6; i++){
+    console.log(inputs[i])
+    if (inputs[i].classList.contains('empty')){
+      $(inputs[i]).attr('value', 201)
+    }
+  }
+});
+
 
 
 async function viewMons() {
@@ -48,20 +68,35 @@ async function put_mon_on_page(name) {
 
         console.log(poke)
         
-        if(!poke.attr("name")){
+        if(!poke.attr("value")){
             console.log('no')
-            poke.attr("name", pokemon.id)
-        } else if(!pokeTwo.attr("name")){
+            
+            poke.attr("value", pokemon.id)
+            poke.attr("class", "full")
+
+            
+            
+          
+            
+        } else if(!pokeTwo.attr("value")){
             console.log('hi')
-            pokeTwo.attr("name", pokemon.id)
-        } else if (!pokeThree.attr("name")){
-            pokeThree.attr("name", pokemon.id)
-        } else if (!pokeFour.attr("name")){
-            pokeFour.attr("name", pokemon.id)
-        } else if (!pokeFive.attr("name")){
-            pokeFive.attr("name", pokemon.id)
-        } else if (!pokeSix.attr("name")) {
-            pokeSix.attr("name", pokemon.id)
+            pokeTwo.attr("value", pokemon.id)
+            pokeTwo.attr("class", "full")
+
+          
+
+        } else if (!pokeThree.attr("value")){
+            pokeThree.attr("value", pokemon.id)
+            pokeThree.attr("class", "full")
+        } else if (!pokeFour.attr("value")){
+            pokeFour.attr("value", pokemon.id)
+            pokeFour.attr("class", "full")
+        } else if (!pokeFive.attr("value")){
+            pokeFive.attr("value", pokemon.id)
+            pokeFive.attr("class", "full")
+        } else if (!pokeSix.attr("value")) {
+            pokeSix.attr("value", pokemon.id)
+            pokeSix.attr("class", "full")
         }
         
         // t = $('data-pokemon-id')
@@ -83,7 +118,7 @@ async function put_mon_on_page(name) {
   $("#look-up-form").on("submit", async function (evt) {
     evt.preventDefault();
 
-    
+    $("#preview").show()
   
     let monName = $("#pokename").val().toLowerCase();
     console.log(monName)

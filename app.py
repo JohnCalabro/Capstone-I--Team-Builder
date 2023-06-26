@@ -84,13 +84,19 @@ def send_to_db():
         return redirect('/login')
     else:
         users = User.query.all()
-        mons = request.form.keys()
+        # testing = soup.find_all("input", type="hidden")
+        mons = request.form.values()
+        
+        test = request.form
+        # print(test)
 
+        
+        
         
         
         team = {index : mon for index, mon in enumerate(mons)}
 
-        print(team[0], team[3])
+        # print(team[0], team[3])
     
         user_team = UserTeam(mon_one_id=team[0],mon_two_id=team[1],mon_three_id=team[2],mon_four_id=team[3],
         mon_five_id=team[4], mon_six_id=team[5], user_id=session["user_id"])
