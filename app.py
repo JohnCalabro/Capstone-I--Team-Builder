@@ -17,6 +17,9 @@ app.config['SECRET_KEY'] = "whatever123456"
 
 connect_db(app)
 
+@app.route('/')
+def home_page():
+    return render_template('home.html')
 
 @app.route('/teams')
 def show_team():
