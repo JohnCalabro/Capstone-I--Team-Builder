@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+{{t.team_id}}
+
+<ul style="list-style: none;">
+    <li class="mon" data-poke-id="{{t.mon_one_id}}"></li>
+    <li class="mon" data-poke-id="{{t.mon_two_id}}"></li>
+    <li class="mon" data-poke-id="{{t.mon_three_id}}"></li>
+    <li class="mon" data-poke-id="{{t.mon_four_id}}"></li>
+    <li class="mon" data-poke-id="{{t.mon_five_id}}"></li>
+    <li class="mon" data-poke-id="{{t.mon_six_id}}"></li>
+</ul>
+
+<div class="teamContainer">
+
+</div>
+
+<div>
+    <form action="/team/{{t.team_id}}/delete" method="POST">
+        <button>Delete Team</button>
+    </form>
+</div>
+
+<div>
+
+    
+
+
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form
+        if field.widget.input_type != 'hidden' %}
+        <p>
+        {{ field.label }}
+        {{ field }}
+
+       {% for err in field.errors %}
+       {{ err }}
+       {% endfor %}
+       </p>
+        {% endfor %}
+        <button>Edit Team</button>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"
+integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script>
+<script src="/static/detail.js"></script>
+{% endblock %}
+    
+    
+   

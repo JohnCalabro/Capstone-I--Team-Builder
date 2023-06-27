@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
+
+
+<ul>
+  {% for t in teams %}
+  <li class="tm"> Team {{t.team_id}} : <a href="/team/{{t.team_id}}">Details - Edit</a> </li>
+  {% endfor %}
+</ul>
 <div data-user-id="{{user.id}}" class="user"></div>
     <h1>Welcome {{user.username}}! View Your Teams Here!</h1>
-
+    
     <div class="container">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-2"></div>
-            <div class="col-2"></div>
-            <div class="col-2"></div>
-            <div class="col-2"></div>
-            <div class="col-2"></div>
+      
+        <div id="team-link" class="row">
+           
         </div>
     </div>
 
-
+ 
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"

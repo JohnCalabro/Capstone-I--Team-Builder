@@ -1,6 +1,9 @@
 from flask import Flask, render_template, redirect, session, flash, request, jsonify
 from models import db, connect_db, User, UserTeam
-from forms import BuildForm, UserForm
+from forms import BuildForm, UserForm, EditForm
+import requests
+import json
+
 
 app =  Flask(__name__)
 
@@ -22,7 +25,8 @@ def show_team():
         return redirect('/login')
     else:
         user = User.query.get(session['user_id'])
-        return render_template('teams.html', user=user)
+        uTeams = user.userteams
+        return render_template('teams.html', user=user, teams=uTeams)
 
 @app.route('/register', methods=["GET","POST"])
 def add_new_user():
@@ -91,7 +95,11 @@ def send_to_db():
         # print(test)
 
         
-        
+        u = User.query.get(session["user_id"])
+
+        if len(u.userteams) > 6:
+            flash("You have reached the limit!")
+            return redirect('/teams')
         
         
         team = {index : mon for index, mon in enumerate(mons)}
@@ -104,7 +112,8 @@ def send_to_db():
         db.session.add(user_team)
         db.session.commit()
         
-        return render_template('test.html' , mons=mons)
+        return redirect('/teams')
+        # return render_template('test.html' , mons=mons)
 
 
 @app.route('/api/userteams')
@@ -119,3 +128,142 @@ def get_team(id):
     teams = user.userteams
     all_mons = [mon.serialize() for mon in teams]
     return jsonify(teams=all_mons)
+
+@app.route('/remove')
+def display_del_page():
+    return render_template('remove.html')
+
+@app.route('/user/delete', methods=["POST"])
+def remove_user():
+    if "user_id" not in session:
+        flash("You can't catch another trainer's Pokemon and you can't delete another account!")
+        return redirect('/teams')
+    else:
+        u = User.query.get(session["user_id"])
+        db.session.delete(u)
+        session.pop('user_id')
+        db.session.commit()
+        return redirect('/register')
+
+@app.route('/team/<int:team_id>', methods=["GET", "POST"])
+def editTeam(team_id):
+
+    team = UserTeam.query.get(team_id)
+    form = EditForm(obj=team)
+
+    
+    BASE_URL = 'https://pokeapi.co/api/v2/pokemon/${m}'
+    
+
+    BASE_URL = 'https://pokeapi.co/api/v2/pokemon'
+
+    response = requests.get(f"{BASE_URL}/97")
+    # print(response.json()['id'])
+
+    if form.validate_on_submit():
+        BASE_URL = 'https://pokeapi.co/api/v2/pokemon'
+        # response = requests.get(f"{BASE_URL}/97")
+        # print(response.json()['name'])
+        # pokName = response.json()['name']
+        
+        # pokeID = response.json()['id']
+
+        team.mon_one_id = form.one.data
+        team.mon_two_id = form.two.data
+        team.mon_three_id = form.three.data
+        team.mon_four_id = form.four.data
+        team.mon_five_id = form.five.data
+        team.mon_six_id = form.six.data
+
+        
+        
+        compre = [v for v in form.data.items()]
+        print(compre, 'COMPRE!!')
+        for k,v in form.data.items():
+            li = []
+            res = requests.get(f"{BASE_URL}/{v}")
+            li.append(res)
+            print([res][0], 'I am here')
+            print(li)
+            
+        
+            
+            
+            txt = requests.get(f"{BASE_URL}/{v}").text
+        # print(li, 'stubborn pc')
+            
+            # print(j['data'])
+
+        
+            
+            # if v in txt:
+            #     print(v)
+            #     # v = pokeID
+            #     print(v)
+
+
+
+            
+
+           
+            
+
+            
+            # print(pokeID)
+            
+            
+
+            # res = response.json()
+            # print(v in res)
+            
+            # if v in response:
+            #     print(v)
+            #     pokeID = response.json()['id']
+            #     v = pokeID
+
+
+
+
+        # BASE_URL = 'https://pokeapi.co/api/v2/pokemon'
+
+        # response = requests.get(f"{BASE_URL}/97")
+        # print(response.json())
+        
+
+
+        # db.session.commit()
+
+
+     
+        return redirect(f"/team/{team_id}")
+    else:
+        return render_template('details.html', t=team, form=form)
+
+
+
+
+
+# @app.route('/team/<int:team_id>')
+# def show_single_team(team_id):
+    
+#     t = UserTeam.query.get(team_id)
+#     form = EditForm(obj=t)
+#     return render_template('details.html', t=t, form=form)
+
+@app.route('/team/<int:team_id>/delete', methods=["POST"])
+def removeTeam(team_id):
+    team = UserTeam.query.get(team_id)
+    db.session.delete(team)
+    db.session.commit()
+    return redirect('/teams')
+
+
+
+  
+    
+    
+    
+    
+
+
+

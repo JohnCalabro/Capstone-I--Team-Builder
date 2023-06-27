@@ -14,6 +14,9 @@
             <ul class="nav navbar-nav flex-row float-right">
                 {% if session['user_id']%}
                 <li>
+                    <a href="/remove">Delete Account</a>
+                   </li>
+                <li>
                     <a href="/logout">Logout</a>
                     
                    </li>
@@ -27,6 +30,7 @@
                 <li>
                 <a href="/register">Sign Up</a>
                </li>
+               
                {% endif %}
             </ul>
         </div>

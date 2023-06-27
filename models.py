@@ -54,7 +54,7 @@ class UserTeam(db.Model):
     mon_four_id = db.Column(db.Integer)
     mon_five_id = db.Column(db.Integer) 
     mon_six_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id')) 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE')) 
 
     teams = db.relationship("User", backref="userteams")
 
