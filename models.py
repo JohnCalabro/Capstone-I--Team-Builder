@@ -21,10 +21,10 @@ class User(db.Model):
     def register(cls, username, password):
         """Register user w with hashed password & return user."""
         hashed = bcrypt.generate_password_hash(password)
-        #turn bytestring into normal (unicode utf8) string
+      
         hashed_utf8 = hashed.decode("utf8")
 
-        #return instance of user w/username and hashed pwd
+       
         return cls(username=username, password=hashed_utf8)
 
     @classmethod
@@ -37,7 +37,7 @@ class User(db.Model):
         found_user = User.query.filter_by(username=username).first()
 
         if found_user and bcrypt.check_password_hash(found_user.password, password):
-            # return user instance
+            
             return found_user
         else:
             return False
@@ -71,9 +71,6 @@ class UserTeam(db.Model):
         }
 
 
-    # def __repr__(self):
-    #     return f"<UserTeam {self.mon_one_id } {self.mon_two_id} {self.mon_three_id} {self.mon_four_id} 
-    #     {self.mon_five_id}, {self.mon_six_id} {self.user_id} >"
 
 
 
@@ -83,12 +80,4 @@ class UserTeam(db.Model):
 
 
 
-# class Champs(db.Model):
 
-#     __tablename__ = 'champs'
-
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     name = db.Column(db.Text, nullable=False)
-#     first_mon = db.Column(db.Integer, 
-
-#     user = db.relationship('User', backref="tweets")
